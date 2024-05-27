@@ -1,4 +1,4 @@
-﻿# 
+﻿#
 # Name        : ReadDhcpOptions.ps1
 # Author      : Ingmar Verheij - http://www.ingmarverheij.com
 # Version     : 1.0, 12 july 2013
