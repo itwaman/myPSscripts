@@ -24,6 +24,12 @@ function Convert-ByteArrayToString {
 		[Parameter(Mandatory = $True, ValueFromPipeline = $True)] [System.Byte[]] $ByteArray,
 		[Parameter()] [String] $Encoding = "ASCII"
 	)
+	#for ($i=0; $ByteArray.Count; $i++) {
+	#	if ($ByteArray[$i] -eq 0) {
+	#		Write-Host "pippo"
+	#		$ByteArray.RemoveAt($i)
+	#	}
+	#}
 	switch ( $Encoding.ToUpper() )	{
 		"ASCII" { $EncodingType = "System.Text.ASCIIEncoding" }
 		"UNICODE" { $EncodingType = "System.Text.UnicodeEncoding" }
@@ -33,7 +39,7 @@ function Convert-ByteArrayToString {
 		Default { $EncodingType = "System.Text.ASCIIEncoding" }
 	}
 	$Encode = new-object $EncodingType
-	$Encode.GetString($ByteArray)
+	$Encode.GetString($ByteArray) -replace "`0", ""
 }
 
 
@@ -333,7 +339,7 @@ foreach ($objNACItem in $objWin32NAC)
 					switch ($dhcpOptionType.ToLower())
 					{
 						"ip" {Write-Host ("{0}.{1}.{2}.{3}" -f ($DhcpOptionValue[0], $DhcpOptionValue[1], $DhcpOptionValue[2], $DhcpOptionValue[3]))}
-						"string" {Write-Host (Convert-ByteArrayToString $DhcpOptionValue)}
+						"string" {Write-Host ((Convert-ByteArrayToString $DhcpOptionValue) -replace "`0", "")}
 						"time" { Write-host ("{0} seconds" -f [Convert]::ToInt32(($DhcpOptionValue[0].ToString("X2") + $DhcpOptionValue[1].ToString("X2") + $DhcpOptionValue[2].ToString("X2") + $DhcpOptionValue[3].ToString("X2")), 16) ) }
 						"dhcpmsgtype" { Write-Host ("{0} ({1})" -f $DhcpOptionValue[0], $DhcpMessageType53Values[$DhcpOptionValue[0]])}
 						default { Write-Host ($DhcpOptionValue | ForEach-Object {$_.ToString("X2")}) }
