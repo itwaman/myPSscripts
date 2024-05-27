@@ -7,34 +7,33 @@
 
 #http://www.sans.org/windows-security/2010/02/11/powershell-byte-array-hex-convert
 function Convert-ByteArrayToString {
-################################################################
-#.Synopsis
-# Returns the string representation of a System.Byte[] array.
-# ASCII string is the default, but Unicode, UTF7, UTF8 and
-# UTF32 are available too.
-#.Parameter ByteArray
-# System.Byte[] array of bytes to put into the file. If you
-# pipe this array in, you must pipe the [Ref] to the array.
-# Also accepts a single Byte object instead of Byte[].
-#.Parameter Encoding
-# Encoding of the string: ASCII, Unicode, UTF7, UTF8 or UTF32.
-# ASCII is the default.
-################################################################
-[CmdletBinding()] Param (
- [Parameter(Mandatory = $True, ValueFromPipeline = $True)] [System.Byte[]] $ByteArray,
- [Parameter()] [String] $Encoding = "ASCII"
-)
-switch ( $Encoding.ToUpper() )
-{
- "ASCII" { $EncodingType = "System.Text.ASCIIEncoding" }
- "UNICODE" { $EncodingType = "System.Text.UnicodeEncoding" }
- "UTF7" { $EncodingType = "System.Text.UTF7Encoding" }
- "UTF8" { $EncodingType = "System.Text.UTF8Encoding" }
- "UTF32" { $EncodingType = "System.Text.UTF32Encoding" }
- Default { $EncodingType = "System.Text.ASCIIEncoding" }
-}
-$Encode = new-object $EncodingType
-$Encode.GetString($ByteArray)
+	################################################################
+	#.Synopsis
+	# Returns the string representation of a System.Byte[] array.
+	# ASCII string is the default, but Unicode, UTF7, UTF8 and
+	# UTF32 are available too.
+	#.Parameter ByteArray
+	# System.Byte[] array of bytes to put into the file. If you
+	# pipe this array in, you must pipe the [Ref] to the array.
+	# Also accepts a single Byte object instead of Byte[].
+	#.Parameter Encoding
+	# Encoding of the string: ASCII, Unicode, UTF7, UTF8 or UTF32.
+	# ASCII is the default.
+	################################################################
+	[CmdletBinding()] Param (
+		[Parameter(Mandatory = $True, ValueFromPipeline = $True)] [System.Byte[]] $ByteArray,
+		[Parameter()] [String] $Encoding = "ASCII"
+	)
+	switch ( $Encoding.ToUpper() )	{
+		"ASCII" { $EncodingType = "System.Text.ASCIIEncoding" }
+		"UNICODE" { $EncodingType = "System.Text.UnicodeEncoding" }
+		"UTF7" { $EncodingType = "System.Text.UTF7Encoding" }
+		"UTF8" { $EncodingType = "System.Text.UTF8Encoding" }
+		"UTF32" { $EncodingType = "System.Text.UTF32Encoding" }
+		Default { $EncodingType = "System.Text.ASCIIEncoding" }
+	}
+	$Encode = new-object $EncodingType
+	$Encode.GetString($ByteArray)
 }
 
 
@@ -63,7 +62,7 @@ $DhcpOptionsCSV = 'Code;Name;Type
 0;Pad;
 1;Subnet Mask;IP
 2;Time Offset;time
-3;Router;string
+3;Router;ip
 4;Time Server;ip
 5;Name Server;string
 6;Domain Server;ip
@@ -270,9 +269,9 @@ foreach ($objNACItem in $objWin32NAC)
 	Write-Host -NoNewline -ForegroundColor White "  IP address : " 
 	Write-Host ((Get-ItemProperty -Path ("HKLM:\SYSTEM\CurrentControlSet\services\Tcpip\Parameters\Interfaces\{0}" -f $objNACItem.SettingID) -Name DhcpIPAddress).DhcpIPAddress)
 	Write-Host -NoNewline -ForegroundColor White "  DHCP server: " 
-	
+	Write-Host ((Get-ItemProperty -Path ("HKLM:\SYSTEM\CurrentControlSet\services\Tcpip\Parameters\Interfaces\{0}" -f $objNACItem.SettingID) -Name DhcpServer).DhcpServer)	
+
 	#Write DHCP options
-	Write-Host ((Get-ItemProperty -Path ("HKLM:\SYSTEM\CurrentControlSet\services\Tcpip\Parameters\Interfaces\{0}" -f $objNACItem.SettingID) -Name DhcpServer).DhcpServer)
 	Write-Host -ForegroundColor White "  Options    :" 
 	
 	#Read DHCP options
@@ -365,6 +364,6 @@ foreach ($objNACItem in $objWin32NAC)
 		}
 	}
 	
-	Write-Host ""
-	Write-Host ""
+	#Write-Host ""
+	#Write-Host ""
 }
