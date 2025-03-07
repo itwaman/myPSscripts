@@ -240,6 +240,7 @@ $DhcpOptionsCSV = 'Code;Name;Type
 213;OPTION_V4_ACCESS_DOMAIN;
 220;Subnet Allocation Option;
 221;Virtual Subnet Selection (VSS) Option;
+235;Microsoft Connected Cache server;
 252;Private/Proxy autodiscovery;string;
 '
 $DhcpOptionsVSCSV = 'Code;Name;Type
