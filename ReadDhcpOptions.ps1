@@ -249,6 +249,7 @@ $DhcpOptionsVSCSV = 'Code;Name;Type
 12;Windows 2000 option 3;string
 212;RES Workspace Manager;string
 220;NAP-SoH;string
+235;Microsoft Connected Cache server;string
 '
 
 try {
