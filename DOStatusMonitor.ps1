@@ -17,7 +17,7 @@ while ($true) {
             @{Name='To-P2P';Expression={$_.BytesToLanPeers}},
             NumPeers,
             #PercentPeerCaching,
-            @{Name='%P2P-Caching';Expression={$_.PercentPeerCaching}},
+            @{Name='%P2P-Caching';Expression={ [math]::Round($_.PercentPeerCaching,2)}},
             isPinned,
             ExpireOn,
             CacheHost,
