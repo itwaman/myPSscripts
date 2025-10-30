@@ -18,7 +18,7 @@ while ($true) {
             NumPeers,
             #PercentPeerCaching,
             @{Name='%P2P-Caching';Expression={ [math]::Round($_.PercentPeerCaching,2)}},
-            isPinned,
+            @{Name='%CacheHost';Expression={ [math]::Round((($_.BytesFromCacheServer/$_.FileSize*100)),2)}},
             ExpireOn,
             CacheHost,
             #FileId `
